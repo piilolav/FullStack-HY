@@ -7,6 +7,7 @@ const cors =require('cors')
 
 app.use(express.json())
 app.use(cors())
+app.use(express.static('build'))
 //huom. morgan antaa jo post pyynnön mukana tulevan datan?
 //app.use(morgan('tiny'))
 
@@ -29,10 +30,6 @@ let persons = [
     { id:3, name: 'Mary Poppendieck', number: '39-23-6423122' }
   ]
 
-
-app.get('/', (req, res) => {
-  res.send('<div> <h1>Hello World!</h1> <p> This is updated phonebook </p> </div>')
-})
 
 app.get('/api/persons', (req, res) => {
     //console.log(typeof(persons))

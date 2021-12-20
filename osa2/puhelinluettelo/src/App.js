@@ -98,7 +98,7 @@ const App = () => {
          number: newNumber
          
         }
-        console.log(personObject.name, " added to Phonebook")
+        //console.log(personObject.name, " added to Phonebook")
         PersonService
           .create(personObject)
          
@@ -106,13 +106,21 @@ const App = () => {
             setPersons(persons.concat(returnedPerson))
             setNewName('')
             setNewNumber('')
-          })
+          
           setNewMessage(
             `${personObject.name} was added to phonebook`
           )
           setTimeout(()=>{
             setNewMessage(null)
           },3000)
+        })
+          .catch(error=>{
+            setNewMessage(`Error: ${error.response.data.error}`)
+            setTimeout(()=>{
+              setNewMessage(null)
+            },3000)
+            console.log(error.response.data)
+          })
     }
     }
 

@@ -1,15 +1,44 @@
+require('dotenv').config()
 const { response } = require('express')
 const express = require('express')
 const { type } = require('express/lib/response')
 const morgan = require('morgan')
 const app = express()
 const cors =require('cors')
+const mongoose = require('mongoose')
+const Person = require('./models/person')
+
 
 app.use(express.json())
 app.use(cors())
 app.use(express.static('build'))
 //huom. morgan antaa jo post pyynnön mukana tulevan datan?
 //app.use(morgan('tiny'))
+
+/*
+Nämä viedään omaan moduliin - poista mahdollisesti myöhemmin
+
+const url =
+  `mongodb+srv://vpiilola:<Password>@cluster0.sptgz.mongodb.net/Phonebook?retryWrites=true`
+
+mongoose.connect(url)
+
+const personSchema = new mongoose.Schema({
+  name: String,
+  number: String
+})
+
+personSchema.set('toJSON', {
+  transform: (document, returnedObject) =>{
+    returnedObject.id =returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
+const Person = mongoose.model('Person', personSchema)
+
+*/
 
 //kustomoitu morgan toimii
 morgan.token('postData', (request) => {
@@ -33,7 +62,10 @@ let persons = [
 
 app.get('/api/persons', (req, res) => {
     //console.log(typeof(persons))
-  res.json(persons)
+    // res.json(persons)
+    Person.find({}).then(persons => {
+      res.json(persons)
+    })
 })
 
 app.get('/info', (req, res) => {
@@ -85,8 +117,8 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request,response) => {
     const body = request.body
-    console.log(body)
-    console.log(body.name)
+//    console.log(body)
+//    console.log(body.name)
 
     if (!body.name){
       return response.status(400).json({
@@ -106,18 +138,19 @@ app.post('/api/persons', (request,response) => {
       })
     }
 
-    const person ={
+    const person =new Person({
       name: body.name,
-      number: body.number,
-      id: generateId(),
-    }
+      number: body.number
+    })
 
-    persons=persons.concat(person)
-
-    response.json(person)
+   // persons=persons.concat(person)
+    person.save().then(savedPerson =>{
+      response.json(savedPerson)
+    })
+    
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })

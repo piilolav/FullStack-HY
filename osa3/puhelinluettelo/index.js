@@ -1,6 +1,5 @@
 require('dotenv').config()
 const express = require('express')
-const { type } = require('express/lib/response')
 const morgan = require('morgan')
 const app = express()
 const cors =require('cors')
@@ -70,8 +69,8 @@ app.get('/info', (req, res) => {
   //console.log(typeof(persons))
   
   //const info =`Phonebook has info for ${pituus} people`
-  const origDate =new Date();
-  const date = origDate.toLocaleString();
+  const origDate =new Date()
+  const date = origDate.toLocaleString()
   const weekday = ['Sun','Mon','Tues','Wed','Thur','Fri','Sat']
   let day= weekday[origDate.getDay()]
 
@@ -196,6 +195,7 @@ const errorHandler =(error, request, response, next)=>{
 
 app.use(errorHandler)
 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

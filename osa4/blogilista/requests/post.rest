@@ -1,0 +1,11 @@
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoaW5pbmdfbWUiLCJpZCI6IjYxY2RiOGRiYzEzZjZkYzA2MzRhMzVlZSIsImlhdCI6MTY0MDg4NzczOH0.prN-XF0Y4JAddVMs6nOynIkDkXgqTlvhnHLn7drAvXE
+
+
+{
+    "title": "Story of My Amazing Coding",
+    "author": "Me Myself and I",
+    "url": "http://readmymaking",
+    "likes": 215
+}

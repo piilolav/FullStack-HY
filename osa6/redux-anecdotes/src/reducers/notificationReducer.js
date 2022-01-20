@@ -1,3 +1,5 @@
+let timeoutID = 0
+
 const notificationReducer = (state=null, action) =>{
     switch (action.type){
         case 'NEW_NOTIFICATION':
@@ -15,8 +17,11 @@ export const setNotification = (notification, time) => {
         type: 'NEW_NOTIFICATION',
         notification
     })
+
+    //timeoutti voidaan peruuttaa funktiolla clearTimeout()
+    clearTimeout(timeoutID)
     
-    setTimeout( () => {
+    timeoutID = setTimeout( () => {
         dispatch({
             type: 'CLEAR_NOTIFICATION',
             notification: null

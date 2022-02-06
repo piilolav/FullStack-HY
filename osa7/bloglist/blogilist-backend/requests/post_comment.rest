@@ -1,0 +1,8 @@
+post http://localhost:3003/api/blogs/61cdf665566c654d141715db/comments
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoaW5pbmdfbWUiLCJpZCI6IjYxY2RiOGRiYzEzZjZkYzA2MzRhMzVlZSIsImlhdCI6MTY0Mzg3NjgyNH0.9dn_-8sOpsfp2HOc8GKfT9Y0Xe_F90b3Mc7hyU5hIo4
+
+
+{
+    "comments":"I kinda like this one"
+}

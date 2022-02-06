@@ -68,31 +68,13 @@ blogsRouter.post('/', async (request, response, next) => {
     */
 })
 
-blogsRouter.delete('/:id', async (request, response) =>{ 
+blogsRouter.delete('/:id', async (request, response, next) =>{ 
 //  const removedBlog = await Blog.findById(response.params.id)
   // eslint-disable-next-line no-undef
   //const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
-
-  const token = request.token
-  // eslint-disable-next-line no-undef
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-
-  if (!token || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
-  }
-  const id = request.params.id
-  const blog = await Blog.findById(id)
-  if (blog.user.toString() === decodedToken.id) {
-    await Blog.findByIdAndRemove(id)
-    response.status(204).end()
-  }
-  return response.status(401).json({
-    error: 'Unauthorized to access the blog',
-  })
   //haetaan oikea user
   //const user = await User.findById(decodedToken.id)
-  /* VANHA TSEKKAA TARVITTAESSA
   const user = request.user
   const deleteBlog = await Blog.findById(request.params.id)
 
@@ -112,9 +94,6 @@ blogsRouter.delete('/:id', async (request, response) =>{
     // unauthorized status code 401
     return response.status(401).json({ error: 'Unauthorized action'})
   }
-
-  PALAUTA TÄMÄ TARVITTAESSA
-  */
 })
 
 blogsRouter.put('/:id', async (request, response, next) =>{
@@ -139,6 +118,27 @@ blogsRouter.put('/:id', async (request, response, next) =>{
   }
 
   
+
+})
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const body = request.body
+  const id = request.params.id
+
+  // eslint-disable-next-line no-undef
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'Token missing or invalid' })
+  }
+
+  const updatedBlog = await Blog.findByIdAndUpdate(id)
+  updatedBlog.comments = updatedBlog.comments.concat(body.comments)
+
+  const saveBlog = await updatedBlog.save()
+  await saveBlog
+    .populate({ path: 'user', select: ['name', 'username'] })
+
+  response.status(200).json(saveBlog.toJSON())
 
 })
 

@@ -25,19 +25,23 @@ const success = {
 
 // const Notification = ({ successMessage, errorMessage })
 const Notification = () => {
-  const notification = useSelector(state => state.notification)
+  const  notification = useSelector(
+    state => state.notification)
+  // console.log(type)
+  //  console.log(notification)
 
-  const type = notification.notificationType
-
-  if (type ===null){
+  if (notification ===null){
     return null
-  } else if (type ==='success'){
+  } else if (notification.notificationType ==='success'){
+    // console.log(notification.type)
     return (
       <div className='success' style={success}>
         {notification.notification}
       </div>
     )
   }else {
+    //    console.log(type)
+    // console.log(notification.type)
     return(
       <div className='error' style={error} >
         {notification.notification}
